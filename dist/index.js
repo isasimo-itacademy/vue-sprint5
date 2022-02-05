@@ -18,8 +18,13 @@ function askJoke() {
             },
         });
         const result = yield response.json();
-        console.log(result.joke);
+        printJoke(result.joke);
     });
 }
-askJoke();
+function printJoke(thejoke) {
+    console.log(thejoke);
+    let content = document.getElementById('joke');
+    content.innerHTML = "";
+    content.append(thejoke);
+}
 //# sourceMappingURL=index.js.map

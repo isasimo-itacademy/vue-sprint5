@@ -8,7 +8,12 @@ async function askJoke() {
       },
     })
     const result = await response.json();
-    console.log(result.joke);
+    printJoke(result.joke);
 }
 
-askJoke();
+function printJoke(thejoke:string) {
+  console.log(thejoke);
+  let content:any = document.getElementById('joke');
+  content.innerHTML = "";
+  content.append(thejoke);
+}
