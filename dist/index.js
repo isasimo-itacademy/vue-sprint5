@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const apiURL = 'https://icanhazdadjoke.com/';
 let reportJokes = [];
+const votingemojis = ["💩", "😅", "🤣"];
 function askJoke() {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch(apiURL, {
@@ -19,7 +20,6 @@ function askJoke() {
             },
         });
         const result = yield response.json();
-        //printJoke(result.joke, result.id);
         let jest = new Joke(result.joke, result.id);
         jest.printJoke();
     });
@@ -30,22 +30,42 @@ class Joke {
         this.id = id;
     }
     printJoke() {
-        let content = document.getElementById('joke');
-        content.innerHTML = "";
-        content.append(this.joke);
-        console.log(this.id);
-        this.vote();
+        let htmljoke = document.getElementById('joke');
+        htmljoke.innerHTML = "";
+        htmljoke.append(this.joke);
+        this.allowvote();
     }
-    vote() {
-        const scores = document.querySelectorAll('.score');
-        scores.forEach(el => el.addEventListener('click', event => {
-            let score = event.target;
-            const d = new Date();
-            let date = d.toISOString();
-            let voting = { idjoke: this.id, score: parseInt(score.getAttribute("id")), date: date };
+    allowvote() {
+        let htmlvotes = document.getElementById('votes');
+        htmlvotes.innerHTML = "";
+        votingemojis.forEach((item, index) => {
+            let btnscore = document.createElement('div');
+            btnscore.className = "score";
+            btnscore.setAttribute('id', index.toString());
+            btnscore.innerHTML = item;
+            htmlvotes.appendChild(btnscore);
+            btnscore.addEventListener('click', event => {
+                this.vote(index);
+            });
+        });
+    }
+    vote(score) {
+        const d = new Date();
+        let date = d.toISOString();
+        if (!this.exists()) {
+            // console.log('new vote');
+            let voting = { idjoke: this.id, score: parseInt(score), date: date };
             reportJokes.push(voting);
-            console.log(reportJokes);
-        }));
+        }
+        else {
+            // console.log('already voted. Rewrite');
+            let objIndex = reportJokes.findIndex((obj => obj.idjoke === this.id));
+            reportJokes[objIndex].score = parseInt(score);
+        }
+        console.log(reportJokes);
+    }
+    exists() {
+        return reportJokes.some(e => e.idjoke === this.id);
     }
 }
 //# sourceMappingURL=index.js.map
