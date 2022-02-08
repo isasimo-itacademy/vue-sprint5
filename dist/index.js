@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 const apiURL = 'https://icanhazdadjoke.com/';
+let reportJokes = [];
 function askJoke() {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch(apiURL, {
@@ -18,13 +19,33 @@ function askJoke() {
             },
         });
         const result = yield response.json();
-        printJoke(result.joke);
+        //printJoke(result.joke, result.id);
+        let jest = new Joke(result.joke, result.id);
+        jest.printJoke();
     });
 }
-function printJoke(thejoke) {
-    console.log(thejoke);
-    let content = document.getElementById('joke');
-    content.innerHTML = "";
-    content.append(thejoke);
+class Joke {
+    constructor(joke, id) {
+        this.joke = joke;
+        this.id = id;
+    }
+    printJoke() {
+        let content = document.getElementById('joke');
+        content.innerHTML = "";
+        content.append(this.joke);
+        console.log(this.id);
+        this.vote();
+    }
+    vote() {
+        const scores = document.querySelectorAll('.score');
+        scores.forEach(el => el.addEventListener('click', event => {
+            let score = event.target;
+            const d = new Date();
+            let date = d.toISOString();
+            let voting = { idjoke: this.id, score: parseInt(score.getAttribute("id")), date: date };
+            reportJokes.push(voting);
+            console.log(reportJokes);
+        }));
+    }
 }
 //# sourceMappingURL=index.js.map
