@@ -13,13 +13,23 @@
     <title>Sprint 5</title>
 </head>
 <body>
-    <div class="container">
-        <h1 class="joke" id="joke"></h1>
-        <div class="votes" id="votes">
-            <!-- creates dynamically the score buttons -->
+    <div class="container flex">
+        <div class="weather" id="weather">
+            <div id="weathericon"></div>
+            <div class="title">
+                <p class="date" id="weatherdate"></p>
+                <p class="description" id="weathertitle"></p>
+            </div>
         </div>
-        <button class="btn" onclick="askJoke()" type="button">Next Joke</button>    
+        <div class="content flex">
+            <h1 class="joke" id="joke"></h1>
+            <div class="votes" id="votes">
+                <!-- creates dynamically the score buttons -->
+            </div>
+            <button class="btn" onclick="askJoke()" type="button">Next Joke</button>    
+        </div>
     </div>
 </body>
+<script>var exports = {"__esModule": true};</script>
 <script src="index.js"></script>
 </html>

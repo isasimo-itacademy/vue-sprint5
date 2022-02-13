@@ -7,18 +7,48 @@
 body {
     font-family: 'PT Serif', serif;
     background-color: #F2E7E0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
 }
 
 .container {
-    width: 55%;
+    height: 100vh;
+}
+
+.weather {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding-right: 24px;
+    background-color: rgb(225 213 206);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+}
+
+.weather .title {
+    margin-left: 12px;
+}
+
+.weather .date {
+    color: #a3958e;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.weather .description {
+    color: #000;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.flex {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+}
+
+.content {
+    width: 55%;
     /* background-color: red; */
 }
 
