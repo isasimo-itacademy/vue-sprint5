@@ -1,21 +1,69 @@
+// Interface
 interface IVote {
   idjoke: number;
   score: number;
   date: string;
 }
-const apiURL:string = 'https://icanhazdadjoke.com/';
-let reportJokes: IVote[] = [];
+// Global Variables
+const weatherAPI:string = 'https://api.openweathermap.org/data/2.5/weather?lat=41.523135&lon=1.9439056&appid=79249a6da5a4a52e43bdc6a5bce6de66';
+const iconWeather:string = 'https://openweathermap.org/img/wn/';
+const today = new Date();
+const monthNames:any = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const month = today.getMonth();
+const day = today.getDate();
+
+const jokesAPI = ["https://icanhazdadjoke.com/", "https://api.chucknorris.io/jokes/random"];
 const votingemojis = ["💩", "😅", "🤣"];
+let reportJokes: IVote[] = [];
+let random:number;
+
+// API Calls
+async function askWeather() {
+  const response = await fetch(weatherAPI, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json'
+    },
+  })
+  const result = await response.json();
+  printWeather(result.weather);
+}
+
+function printWeather(weather:any) {
+  console.log(weather);
+  let whatweather = weather[0].main;
+  let whaticon = `${weather[0].icon}@2x.png`;
+  // create html tags
+  let weathericon:any = document.getElementById('weathericon');
+  let weathertitle:any = document.getElementById('weathertitle');
+  let weatherdate:any = document.getElementById('weatherdate');
+
+  let img = document.createElement('img');
+  let datetext = monthNames[month].concat(" ", day.toString());
+  img.src = iconWeather.concat(whaticon.toString());
+  weathericon.append(img);
+  weatherdate.append(datetext);
+  weathertitle.append(whatweather);
+}
 
 async function askJoke() {
-    const response = await fetch(apiURL, {
+  random = Math.floor(Math.random()*jokesAPI.length);
+  console.log(`joke from:${jokesAPI[random]}`);
+  const response = await fetch(jokesAPI[random], {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
       },
     })
     const result = await response.json();
-    let jest = new Joke(result.joke, result.id);
+    let jest:any;
+
+    if(random === 0) {
+      jest = new Joke(result.joke, result.id);
+    } else if(random === 1){
+      jest = new Joke(result.value, result.id);
+    }
+    
     jest.printJoke();
 }
 
@@ -73,3 +121,4 @@ class Joke {
   }
 }
 
+askWeather();
