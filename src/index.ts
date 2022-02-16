@@ -1,6 +1,7 @@
 // Interface
 interface IVote {
   idjoke: number;
+  joke: string;
   score: number;
   date: string;
 }
@@ -17,6 +18,8 @@ const votingemojis = ["💩", "😅", "🤣"];
 let reportJokes: IVote[] = [];
 let random:number;
 
+const giphyAPI:string = 'https://api.giphy.com/v1/gifs/random?api_key=qYDVGBA5krjcnKV9mh4mX0kbnXU1LRH0&tag=laugh&rating=g'; 
+
 // API Calls
 async function askWeather() {
   const response = await fetch(weatherAPI, {
@@ -29,21 +32,15 @@ async function askWeather() {
   printWeather(result.weather);
 }
 
-function printWeather(weather:any) {
-  console.log(weather);
-  let whatweather = weather[0].main;
-  let whaticon = `${weather[0].icon}@2x.png`;
-  // create html tags
-  let weathericon:any = document.getElementById('weathericon');
-  let weathertitle:any = document.getElementById('weathertitle');
-  let weatherdate:any = document.getElementById('weatherdate');
-
-  let img = document.createElement('img');
-  let datetext = monthNames[month].concat(" ", day.toString());
-  img.src = iconWeather.concat(whaticon.toString());
-  weathericon.append(img);
-  weatherdate.append(datetext);
-  weathertitle.append(whatweather);
+async function askGif() {
+  const response = await fetch(giphyAPI, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json'
+    },
+  })
+  const result = await response.json();
+  printGif(result.data.images.fixed_width.url);
 }
 
 async function askJoke() {
@@ -65,6 +62,32 @@ async function askJoke() {
     }
     
     jest.printJoke();
+    askGif();
+}
+
+function printWeather(weather:any) {
+  console.log(weather);
+  let whatweather = weather[0].main;
+  let whaticon = `${weather[0].icon}@2x.png`;
+  // create html tags
+  let weathericon:any = document.getElementById('weathericon');
+  let weathertitle:any = document.getElementById('weathertitle');
+  let weatherdate:any = document.getElementById('weatherdate');
+
+  let img = document.createElement('img');
+  let datetext = monthNames[month].concat(" ", day.toString());
+  img.src = iconWeather.concat(whaticon.toString());
+  weathericon.append(img);
+  weatherdate.append(datetext);
+  weathertitle.append(whatweather);
+}
+
+function printGif(gif:any) {
+  let htmlcontent:any = document.getElementById('gif');
+  let imggif = document.createElement('img');
+  htmlcontent.innerHTML = "";
+  imggif.src = gif;
+  htmlcontent.append(imggif);
 }
 
 class Joke {
@@ -106,7 +129,7 @@ class Joke {
 
     if(!this.exists()){
       // console.log('new vote');
-      let voting = { idjoke: this.id, score: parseInt(score), date: date }; 
+      let voting = { idjoke: this.id, joke: this.joke, score: parseInt(score), date: date }; 
       reportJokes.push(voting);
     } else {
       // console.log('already voted. Rewrite');
