@@ -11,6 +11,9 @@ body {
 
 .container {
     height: 100vh;
+    background-image: url(./images/background.svg);
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .weather {
@@ -18,7 +21,7 @@ body {
     top: 16px;
     left: 16px;
     padding-right: 24px;
-    background-color: rgb(225 213 206);
+    background-color: #e1d5ce;
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -52,6 +55,10 @@ body {
     /* background-color: red; */
 }
 
+.gif img {
+    border-radius: 6px;
+}
+
 .joke {
     text-align: center;
 }
@@ -77,6 +84,6 @@ body {
     font-size: 24px;
     margin-right: 16px;
     padding: 16px 24px;
-    background-color: rgb(221 207 199);
+    background-color: #ddcfc7;
     border-radius: 6px;
 }
